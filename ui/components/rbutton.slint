@@ -1,0 +1,59 @@
+import { Common } from "../standard/common.slint";
+
+
+export component RButton inherits Rectangle {
+    in-out property <color> back-color: Common.back-color;
+    in-out property <color> click-color: Common.click-color;
+    in-out property <color> hover-color: Common.hover-color;
+    in-out property <color> text-color: Common.text-color;
+    in-out property <color> text-click-color: Common.text-click-color;
+    
+    callback clicked <=> touch.clicked;
+
+    width: Common.button-width;
+    height: Common.button-height;
+    preferred-width: Common.button-width;
+    preferred-height: Common.button-height;
+
+    Rectangle {
+        width: Common.button-width - Common.button-padding-horizontal * 2;
+        height: Common.button-height - Common.button-padding-vertical * 2;
+        preferred-width: Common.button-width - Common.button-padding-horizontal * 2;
+        preferred-height: Common.button-height - Common.button-padding-vertical * 2;
+    
+        background: touch.pressed ? parent.click-color : touch.has-hover ? parent.hover-color :  parent.back-color;
+        border-color: Common.border-color;
+        border-radius: root.height / Common.button-corner-radius;
+        border-width: Common.button-border-size;
+    }
+
+    padding-left: Common.button-padding-horizontal;
+    padding-right: Common.button-padding-horizontal;
+    padding-top: Common.button-padding-vertical;
+    padding-bottom: Common.button-padding-vertical;
+    
+    touch := TouchArea { }
+    
+    in-out property text <=> label.text;
+    
+    label := Text {
+        color: touch.pressed ? parent.text-click-color : parent.text-color;
+        font-size: Common.font-size;
+        text: "Button";
+    }
+}
+
+export component RBlueButton inherits RButton {
+    back-color: royalblue;
+    text-color: white;
+}
+
+export component RRedButton inherits RButton {
+    back-color: crimson;
+    text-color: white;
+}
+
+export component RWhiteButton inherits RButton {
+    back-color: white;
+    text-color: black;
+}

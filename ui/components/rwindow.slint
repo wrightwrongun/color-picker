@@ -1,0 +1,13 @@
+import { Common } from "../standard/common.slint";
+
+
+export component RWindow inherits Window {
+    preferred-width: Common.window-width;
+    preferred-height: Common.window-height;
+    min-width: Common.window-min-width;
+    min-height: Common.window-min-height;
+    
+    background: Common.window-back-color;
+
+    default-font-size: Common.font-size;
+}

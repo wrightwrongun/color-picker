@@ -1,0 +1,19 @@
+import { VerticalBox, HorizontalBox } from "std-widgets.slint";
+
+import { RButton } from "rbutton.slint";
+
+
+export component RDialog inherits Dialog {
+    VerticalBox {
+        VerticalBox {
+            vertical-stretch: 100%;
+
+            @children
+        }
+        HorizontalBox {
+            alignment: LayoutAlignment.end;
+            RButton {}
+            RButton {}
+        }
+    }
+}

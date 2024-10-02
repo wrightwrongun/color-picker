@@ -1,0 +1,102 @@
+import { VerticalBox, HorizontalBox } from "std-widgets.slint";
+
+import { RButton } from "rbutton.slint";
+
+
+export component OperatorPad inherits VerticalBox {
+    padding: 0px;
+    spacing: 0px;
+
+    callback operator-click(string);
+
+    HorizontalBox {
+        padding: 3px;
+        spacing: 3px;
+ 
+        RButton {
+            text: "+";
+            width: 40px;
+            height: 40px;
+            back-color: bisque;
+            hover-color: blanchedalmond;
+            text-color: black;
+            clicked => {operator-click(self.text)}
+        }
+        RButton {
+            text: "C";
+            width: 40px;
+            height: 40px;
+            padding: 3px;
+            back-color: coral;
+            hover-color: burlywood;
+            clicked => {operator-click(self.text)}
+        }
+    }        
+    HorizontalBox {
+        padding: 3px;
+        spacing: 3px;
+ 
+        RButton {
+            text: "-";
+            width: 40px;
+            height: 40px;
+            back-color: bisque;
+            hover-color: blanchedalmond;
+            text-color: black;
+            clicked => {operator-click(self.text)}
+        }
+        RButton {
+            text: "CE";
+            width: 40px;
+            height: 40px;
+            padding: 3px;
+            back-color: coral;
+            hover-color: burlywood;
+            clicked => {operator-click(self.text)}
+        }
+    }        
+    HorizontalBox {
+        padding: 3px;
+        spacing: 3px;
+ 
+        RButton {
+            text: "X";
+            width: 40px;
+            height: 40px;
+            back-color: bisque;
+            hover-color: blanchedalmond;
+            text-color: black;
+            clicked => {operator-click(self.text)}
+        }
+        RButton {
+            text: "S+";
+            width: 40px;
+            height: 40px;
+            padding: 3px;
+            back-color: crimson;
+            clicked => {operator-click(self.text)}
+        }
+    }        
+    HorizontalBox {
+        padding: 3px;
+        spacing: 3px;
+ 
+        RButton {
+            text: "/";
+            width: 40px;
+            height: 40px;
+            back-color: bisque;
+            hover-color: blanchedalmond;
+            text-color: black;
+            clicked => {operator-click(self.text)}
+        }
+        RButton {
+            text: "S-";
+            width: 40px;
+            height: 40px;
+            padding: 3px;
+            back-color: crimson;
+            clicked => {operator-click(self.text)}
+        }
+    }
+}

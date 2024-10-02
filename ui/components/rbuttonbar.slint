@@ -1,0 +1,26 @@
+import { Common } from "../standard/common.slint";
+
+
+export component RButtonBar inherits Rectangle {
+    in-out property <bool> border : true;
+    in-out property <bool> top : false;
+    in-out property <bool> bottom : true;
+
+    in-out property alignment <=> layout.alignment;
+
+    background: Common.bar-back-color;
+    border-color: Common.bar-border-color;
+    border-bottom-left-radius: top ? root.height / Common.bar-corner-radius : 0;
+    border-bottom-right-radius: top ? root.height / Common.bar-corner-radius : 0;
+    border-top-left-radius: bottom ? root.height / Common.bar-corner-radius : 0;
+    border-top-right-radius: bottom ? root.height / Common.bar-corner-radius : 0;
+    border-width: border ? Common.bar-border-size : 0px;
+
+    layout := HorizontalLayout {
+        alignment: LayoutAlignment.center;
+        width: parent.width - Common.bar-padding;
+        padding: Common.bar-padding;
+
+        @children
+    }
+}

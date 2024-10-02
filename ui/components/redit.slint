@@ -1,0 +1,29 @@
+import { Common } from "../standard/common.slint";
+import { LineEdit } from "std-widgets.slint";
+
+
+export component REdit inherits Rectangle {
+    callback accepted <=> edit.accepted;
+    callback edited <=> edit.edited;
+
+    in-out property <string> text <=> edit.text;
+
+    width: Common.edit-width;
+    height: Common.button-height;
+    preferred-width: Common.edit-width;
+    preferred-height: Common.button-height;
+
+    padding-left: Common.edit-padding-horizontal;
+    padding-right: Common.edit-padding-horizontal;
+    padding-top: Common.edit-padding-vertical;
+    padding-bottom: Common.edit-padding-vertical;
+
+    edit := LineEdit {
+        width: Common.edit-width - Common.edit-padding-horizontal * 2;
+        height: Common.edit-height - Common.edit-padding-vertical * 2;
+        preferred-width: Common.edit-width - Common.edit-padding-horizontal * 2;
+        preferred-height: Common.edit-height - Common.edit-padding-vertical * 2;
+
+        font-size: Common.font-size;
+    }
+}

@@ -1,0 +1,132 @@
+import { HorizontalBox, VerticalBox, Button } from "std-widgets.slint";
+
+import { RButton } from "rbutton.slint";
+
+
+export component NumberPad inherits VerticalBox {
+    padding: 0px;
+    spacing: 0px;
+
+    in-out property <string> display: "0";
+
+    callback digit-click(string, string) -> bool;
+    callback enter-click(string) -> bool;
+
+    public function reset() {
+        display = "0";
+    }
+
+    public function has-value() -> bool {
+        return display != "0";
+    }
+
+    function do-digit-clicked(digit: string) -> string {
+        if (digit-click(display, digit)) {
+            if (display == "0") && (digit != ".") {
+                display = "";
+            }
+            
+            display += digit;
+        }
+
+        return display;
+    }
+
+    HorizontalBox {
+        padding: 3px;
+        spacing: 3px;
+        
+        RButton {
+            width: 40px;
+            height: 40px;
+            text: "7";
+            clicked => {do-digit-clicked(self.text)}
+        }
+        RButton {
+            width: 40px;
+            height: 40px;
+            text: "8";
+            clicked => {do-digit-clicked(self.text)}
+        }
+        RButton {
+            width: 40px;
+            height: 40px;
+            text: "9";
+            clicked => {do-digit-clicked(self.text)}
+        }
+    }
+    HorizontalBox {
+        padding: 3px;
+        spacing: 3px;
+        
+        RButton {
+            width: 40px;
+            height: 40px;
+            text: "4";
+            clicked => {do-digit-clicked(self.text)}
+        }
+        RButton {
+            width: 40px;
+            height: 40px;
+            text: "5";
+            clicked => {do-digit-clicked(self.text)}
+        }
+        RButton {
+            width: 40px;
+            height: 40px;
+            text: "6";
+            clicked => {do-digit-clicked(self.text)}
+        }
+    }
+    HorizontalBox {
+        padding: 3px;
+        spacing: 3px;
+        
+        RButton {
+            width: 40px;
+            height: 40px;
+            text: "1";
+            clicked => {do-digit-clicked(self.text)}
+        }
+        RButton {
+            width: 40px;
+            height: 40px;
+            text: "2";
+            clicked => {do-digit-clicked(self.text)}
+        }
+        RButton {
+            width: 40px;
+            height: 40px;
+            text: "3";
+            clicked => {do-digit-clicked(self.text)}
+        }
+    }
+    HorizontalBox {
+        padding: 3px;
+        spacing: 3px;
+        
+        RButton {
+            width: 40px;
+            height: 40px;
+            text: ".";
+            clicked => {do-digit-clicked(self.text)}
+        }
+        RButton {
+            width: 40px;
+            height: 40px;
+            text: "0";
+            clicked => {do-digit-clicked(self.text)}
+        }
+        RButton {
+            width: 40px;
+            height: 40px;
+            text: " ";
+            back-color: crimson;
+            clicked => {
+                if enter-click(display) {
+                    reset();
+                }
+            }
+        }
+    }
+}

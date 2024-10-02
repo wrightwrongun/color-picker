@@ -1,0 +1,102 @@
+import { ScrollView, TextEdit, CheckBox, LineEdit } from "std-widgets.slint";
+
+import { Common } from "../standard/common.slint";
+import { Strings } from "../standard/strings.slint";
+import { RWindow } from "../components/rwindow.slint";
+import { RButton, RBlueButton, RRedButton, RWhiteButton } from "../components/rbutton.slint";
+import { RButtonBar } from "../components/rbuttonbar.slint";
+import { REdit } from "../components/redit.slint";
+
+export { Strings }
+
+
+export struct SharedColor {
+    name: string,
+    rgb: [int]
+}
+
+
+export component AppWindow inherits RWindow {
+    title: "Color Picker";
+    
+    pure callback get-colors() -> [SharedColor];
+    pure callback send-colors([string]);
+
+    VerticalLayout {
+        RButtonBar {
+            bottom: false;
+            top: true;
+
+            alignment: LayoutAlignment.start;
+
+            RRedButton {
+
+            }
+        }
+
+        ScrollView {
+            VerticalLayout {
+                for x in get-colors(): Text {
+                    text: x.name;
+                }
+            }
+        }
+
+        RButtonBar {
+            border: something.checked;
+            
+            RButton {
+                text: "hello, world!";
+                
+                clicked => {
+                    send-colors(["one", "two", "three"]);
+                }
+            }
+            RBlueButton {
+                text: "Yada!";
+                
+                clicked => {
+                    if something.checked {
+                        edit1.text = Strings.upper(edit1.text);
+                    }
+                    else {
+                        edit1.text = Strings.lower(edit1.text);
+                    }
+
+                    if Strings.contains(edit1.text, edit2.text) {
+                        debug("yada");
+                    }
+                    else {
+                        debug("nada");
+                    }
+                }
+            }
+            edit1 := REdit {
+                text: "abc";
+                accepted => {
+                    debug("edit1 -> accepted");
+                }
+                edited => {
+                    debug("edit1 -> edited");
+                }
+            }
+            edit2 := REdit {
+                text: "xyz";
+                accepted => {
+                    debug("edit2 -> accepted");
+                }
+                edited => {
+                    debug("edit2 -> edited");
+                }
+            }
+            something := CheckBox {
+                text: "To Upper?";
+                checked: true;
+
+                toggled => {
+                    //parent.border = self.checked;
+                }
+            }
+        }
+    }
+}
