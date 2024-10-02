@@ -1,13 +1,16 @@
 import { Common } from "../standard/common.slint";
-import { LineEdit } from "std-widgets.slint";
+import { ComboBox } from "std-widgets.slint";
 
 
-export component REdit inherits Rectangle {
-    callback accepted <=> edit.accepted;
-    callback edited <=> edit.edited;
+export component RComboBox inherits Rectangle {
+    callback selected <=> combobox.selected;
 
-    in-out property text <=> edit.text;
-
+    in-out property current-index <=> combobox.current-index;
+    in-out property current-value <=> combobox.current-value;
+    in property enabled <=> combobox.enabled;
+    out property has-focus <=> combobox.has-focus;
+    in property model <=> combobox.model;
+    
     width: Common.edit-width;
     height: Common.button-height;
     preferred-width: Common.edit-width;
@@ -18,12 +21,10 @@ export component REdit inherits Rectangle {
     padding-top: Common.edit-padding-vertical;
     padding-bottom: Common.edit-padding-vertical;
 
-    edit := LineEdit {
+    combobox := ComboBox {
         width: Common.edit-width - Common.edit-padding-horizontal * 2;
         height: Common.edit-height - Common.edit-padding-vertical * 2;
         preferred-width: Common.edit-width - Common.edit-padding-horizontal * 2;
         preferred-height: Common.edit-height - Common.edit-padding-vertical * 2;
-
-        font-size: Common.font-size;
     }
 }

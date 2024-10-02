@@ -1,4 +1,4 @@
-import { ScrollView, TextEdit, CheckBox, LineEdit } from "std-widgets.slint";
+import { ScrollView, TextEdit, CheckBox, LineEdit, ComboBox } from "std-widgets.slint";
 
 import { Common } from "../standard/common.slint";
 import { Strings } from "../standard/strings.slint";
@@ -6,6 +6,7 @@ import { RWindow } from "../components/rwindow.slint";
 import { RButton, RBlueButton, RRedButton, RWhiteButton } from "../components/rbutton.slint";
 import { RButtonBar } from "../components/rbuttonbar.slint";
 import { REdit } from "../components/redit.slint";
+import { RComboBox } from "../components/rcombobox.slint";
 
 export { Strings }
 
@@ -20,8 +21,11 @@ export component AppWindow inherits RWindow {
     title: "Color Picker";
     
     pure callback get-colors() -> [SharedColor];
+    pure callback get-families() -> [string];
     pure callback send-colors([string]);
 
+    in property <bool> show-families: false;
+    
     VerticalLayout {
         RButtonBar {
             bottom: false;
@@ -30,7 +34,13 @@ export component AppWindow inherits RWindow {
             alignment: LayoutAlignment.start;
 
             RRedButton {
-
+            }
+            
+            if show-families: RComboBox {
+                model: get-families();
+                selected(value) => {
+                    debug("family='\{value}'");
+                }
             }
         }
 

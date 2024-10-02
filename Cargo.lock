@@ -768,6 +768,7 @@ dependencies = [
 name = "color-picker"
 version = "0.1.0"
 dependencies = [
+ "itertools 0.13.0",
  "serde",
  "serde_json",
  "slint",

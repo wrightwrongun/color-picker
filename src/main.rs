@@ -3,12 +3,13 @@
 #![allow(dead_code, unused)]
 
 
-use std::{clone, io, vec};
+use std::io;
 use std::{fs::File, io::BufReader};
 
-use serde::{Deserialize, Serialize, Deserializer};
+use itertools::Itertools;
+use serde::{Deserialize, Deserializer, Serialize};
 
-use slint::{ComponentHandle, Model, ModelRc, SharedString, VecModel};
+use slint::{ComponentHandle, SharedString};
 
 slint::include_modules!();
 
@@ -52,11 +53,16 @@ fn main() {
     if let Ok(mut colors) = read_json_colors(path) {
         colors.sort();
 
-        let ui = AppWindow::new().unwrap();
+        let mut families: Vec<String> = colors.iter()
+                                                .map(|color| color.families.clone())
+                                                .inspect(|a| println!("{:?}", a))
+                                                .flatten()
+                                                .unique()
+                                                .collect();
 
-        ui.global::<Strings>().on_contains(|x, y| String::from(x).contains(&String::from(y)));
-        ui.global::<Strings>().on_upper(|x| SharedString::from(String::from(x).to_uppercase()));
-        ui.global::<Strings>().on_lower(|x| SharedString::from(String::from(x).to_lowercase()));
+        families.sort();
+
+        let ui = AppWindow::new().unwrap();
 
         ui.on_get_colors(move || {
             slintutils::map_to_array(&colors, |color| {
@@ -67,6 +73,11 @@ fn main() {
             })
         });
 
+        ui.on_get_families(move || {
+            println!("get families (count={})", families.len());
+            slintutils::map_to_array(&families, |s| SharedString::from(s))
+        });
+
         ui.on_send_colors(move |colors| {
             let x = slintutils::map_from_array(colors, |color| String::from(color));
             
@@ -74,6 +85,10 @@ fn main() {
                 println!("color={:?}", q);
             }
         });
+
+        // Have to create the slint 'families' combo-box dynamically so that
+        // it can call the 'get-families' callback...
+        ui.set_show_families(true);
 
         ui.run();
     }

@@ -1,3 +1,19 @@
+/*
+    In Slint:
+        
+        import { Strings } from "../standard/strings.slint";
+        export { Strings }
+
+    
+    In Rust:
+
+        let ui = AppWindow::new().unwrap();
+
+        ui.global::<Strings>().on_contains(|x, y| String::from(x).contains(&String::from(y)));
+        ui.global::<Strings>().on_upper(|x| SharedString::from(String::from(x).to_uppercase()));
+        ui.global::<Strings>().on_lower(|x| SharedString::from(String::from(x).to_lowercase()));
+*/
+
 export global Strings {
     pure callback contains(string, string) -> bool;
 
