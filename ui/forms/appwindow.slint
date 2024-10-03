@@ -1,12 +1,39 @@
+/* ----------------------------------------------------------------------------
+
+    MIT License
+
+    Copyright (c) 2024 MW
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+---------------------------------------------------------------------------- */
+
 import { ScrollView, TextEdit, CheckBox, LineEdit, ComboBox } from "std-widgets.slint";
 
 import { Common } from "../standard/common.slint";
 import { Strings } from "../standard/strings.slint";
 import { RWindow } from "../components/rwindow.slint";
 import { RButton, RBlueButton, RRedButton, RWhiteButton } from "../components/rbutton.slint";
-import { RButtonBar } from "../components/rbuttonbar.slint";
+import { RTopButtonBar, RBottomButtonBar } from "../components/rbuttonbar.slint";
 import { REdit } from "../components/redit.slint";
 import { RComboBox } from "../components/rcombobox.slint";
+import { RCheckBox } from "../components/rcheckbox.slint";
 
 export { Strings }
 
@@ -20,26 +47,61 @@ export struct SharedColor {
 export component AppWindow inherits RWindow {
     title: "Color Picker";
     
+    // Flag used to dynamically instantiate controls that are dependent
+    // on callbacks - do not change!
+    private property <bool> is-initialised: true;
+
     pure callback get-colors() -> [SharedColor];
     pure callback get-families() -> [string];
     pure callback send-colors([string]);
 
-    in property <bool> show-families: false;
+    private property <[string]> families;
+    private property <string> filter-family;
+
+    function do-family-list() ->[string] {
+        families = get-families();
+        filter-family = families[0];
+
+        return families;
+    }
+
+    function do-family-filter() {
+        debug("AppWindow.do-filter()");
+
+        if filter-checkbox.checked {
+            debug("AppWindow.do-filter() : family '\{filter-family}'");
+        }
+        else {
+            debug("AppWindow.do-filter() : clear filter");
+        }
+    }
     
     VerticalLayout {
-        RButtonBar {
-            bottom: false;
-            top: true;
-
+        RTopButtonBar {
             alignment: LayoutAlignment.start;
+            border: something.checked;
 
-            RRedButton {
+            filter-checkbox := RCheckBox {
+                text: "Filter?";
+                checked: false;
+
+                toggled => {
+                    do-family-filter();
+                }
             }
             
-            if show-families: RComboBox {
+            if is-initialised: family-list := RComboBox {
+                enabled: filter-checkbox.checked;
                 model: get-families();
+                current-index: 0;
+                
+                init => {
+                    filter-family = self.current-value;
+                }
+
                 selected(value) => {
-                    debug("family='\{value}'");
+                    filter-family = self.current-value;
+                    do-family-filter();
                 }
             }
         }
@@ -52,7 +114,10 @@ export component AppWindow inherits RWindow {
             }
         }
 
-        RButtonBar {
+        RBottomButtonBar {
+            top: false;
+            bottom: true;
+
             border: something.checked;
             
             RButton {
@@ -104,7 +169,7 @@ export component AppWindow inherits RWindow {
                 checked: true;
 
                 toggled => {
-                    //parent.border = self.checked;
+                    parent.border = self.checked;
                 }
             }
         }

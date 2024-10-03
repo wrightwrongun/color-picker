@@ -24,33 +24,8 @@
 
 ---------------------------------------------------------------------------- */
 
-import { Common } from "../standard/common.slint";
-import { ComboBox } from "std-widgets.slint";
+import { CheckBox } from "std-widgets.slint";
 
 
-export component RComboBox inherits Rectangle {
-    callback selected <=> combobox.selected;
-
-    in-out property current-index <=> combobox.current-index;
-    in-out property current-value <=> combobox.current-value;
-    in property enabled <=> combobox.enabled;
-    out property has-focus <=> combobox.has-focus;
-    in property model <=> combobox.model;
-    
-    width: Common.edit-width;
-    height: Common.button-height;
-    preferred-width: Common.edit-width;
-    preferred-height: Common.button-height;
-
-    padding-left: Common.edit-padding-horizontal;
-    padding-right: Common.edit-padding-horizontal;
-    padding-top: Common.edit-padding-vertical;
-    padding-bottom: Common.edit-padding-vertical;
-
-    combobox := ComboBox {
-        width: Common.edit-width - Common.edit-padding-horizontal * 2;
-        height: Common.edit-height - Common.edit-padding-vertical * 2;
-        preferred-width: Common.edit-width - Common.edit-padding-horizontal * 2;
-        preferred-height: Common.edit-height - Common.edit-padding-vertical * 2;
-    }
+export component RCheckBox inherits CheckBox {
 }
